@@ -3,6 +3,7 @@
 #include "AuthServiceProvider.h"
 #include "LogServiceProvide.h"
 #include "ViewServiceProvider.h"
+#include "ConfigProvider.h"
 
 BEGIN_APP_NAMESPACE
 
@@ -18,13 +19,16 @@ ServiceProvidersManager::~ServiceProvidersManager()
 void ServiceProvidersManager::InitServices()
 {
 	// 可以读取DLL中的IServiceProvider跟IServiceConsumer或者自己搞
-	m_auth = std::tr1::shared_ptr<AuthProvider>(new AuthProvider());
-	m_log  = std::tr1::shared_ptr<LogProvider>(new LogProvider());
-
+	m_auth = std::tr1::shared_ptr<IAuthProvider>(new AuthProvider());
+	m_log  = std::tr1::shared_ptr<ILogProvider>(new LogProvider());
+	m_config = std::tr1::shared_ptr<IConfigProvider>(new ConfigProvider());
 
 	AddServiceProvider(m_auth.get());
 	AddServiceProvider(m_log.get());
 	AddServiceProvider(m_view.get());
+	AddServiceProvider(m_config.get());
+	
+	AddServiceConsumer(m_config.get());
 
 }
 

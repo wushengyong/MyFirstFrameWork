@@ -11,6 +11,7 @@ BEGIN_APP_NAMESPACE
 class IAuthProvider;
 class ILogProvider;
 class IViewProvider;
+class IConfigProvider;
 
 #define PROVIDER_NAME  _T("ServiceProvidersManager")
 #define SERVICE_NAME   _T("ServiceProvider")
@@ -45,6 +46,7 @@ private:
 	std::tr1::shared_ptr<IAuthProvider>   m_auth;
 	std::tr1::shared_ptr<ILogProvider>    m_log;
 	std::tr1::shared_ptr<IViewProvider>   m_view;
+	std::tr1::shared_ptr<IConfigProvider> m_config;
 };
 
 END_APP_NAMESPACE
