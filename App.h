@@ -3,6 +3,8 @@
 #include "interface/IServiceConsumer.h"
 #include <memory>
 
+BEGIN_APP_NAMESPACE
+
 class ServiceProvidersManager;
 class IViewProvider;
 
@@ -21,3 +23,4 @@ private:
 	IViewProvider*                                 m_pViewProvider;
 };
 
+END_APP_NAMESPACE

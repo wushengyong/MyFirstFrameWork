@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "FileLogger.h"
 
-
+BEGIN_APP_NAMESPACE
 FileLogger::FileLogger(const tstring& strFilePath, const LOG_TYPE& minLogType /*= DEBUG_LOG*/)
 {
 	m_strFilePath = strFilePath;
@@ -22,3 +22,4 @@ void FileLogger::Log(LOG_TYPE logType, const tstring& strLog)
 		}
 	}
 }
+END_APP_NAMESPACE

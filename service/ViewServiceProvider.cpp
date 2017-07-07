@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ViewServiceProvider.h"
 
+BEGIN_APP_NAMESPACE
+
 void ViewProvider::RunUI()
 {
 }
@@ -18,3 +20,5 @@ tstring ViewProvider::GetProviderName() const
 {
 	return VIEW_PROVIDER_NAME;
 }
+
+END_APP_NAMESPACE

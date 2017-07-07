@@ -2,6 +2,7 @@
 #include "interface/ILogger.h"
 #include <fstream>
 
+BEGIN_APP_NAMESPACE
 class FileLogger : public ILogger
 {
 public:
@@ -16,3 +17,4 @@ private:
 	std::ofstream       m_stream;
 };
 
+END_APP_NAMESPACE

@@ -2,6 +2,8 @@
 
 #include "interface/IAuthProvider.h"
 
+BEGIN_APP_NAMESPACE
+
 class AuthProvider : public IAuthProvider
 {
 public:
@@ -12,3 +14,4 @@ public:
 	virtual tstring GetProviderName() const override;
 
 };
+END_APP_NAMESPACE

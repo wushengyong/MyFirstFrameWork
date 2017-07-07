@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+BEGIN_APP_NAMESPACE
+
 class IAuthProvider;
 class ILogProvider;
 class IViewProvider;
@@ -45,3 +47,4 @@ private:
 	std::tr1::shared_ptr<IViewProvider>   m_view;
 };
 
+END_APP_NAMESPACE

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "LogServiceProvide.h"
 
+BEGIN_APP_NAMESPACE
 void LogProvider::AddLogger(ILogger* pLogger)
 {
 	if (std::find(m_vecLoggers.begin(), m_vecLoggers.end(), pLogger) == m_vecLoggers.end()) {
@@ -36,3 +37,4 @@ void LogProvider::Log(LOG_TYPE logType, const tstring& strLog)
 		m_vecLoggers[i]->Log(logType, strLog);
 	}
 }
+END_APP_NAMESPACE

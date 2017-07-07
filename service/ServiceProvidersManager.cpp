@@ -4,6 +4,8 @@
 #include "LogServiceProvide.h"
 #include "ViewServiceProvider.h"
 
+BEGIN_APP_NAMESPACE
+
 ServiceProvidersManager::ServiceProvidersManager()
 {
 }
@@ -82,3 +84,5 @@ void ServiceProvidersManager::RemovServiceConsumer(IServiceConsumer* pServiceCon
 	auto itr = std::find(m_vecServiceConsumer.begin(), m_vecServiceConsumer.end(), pServiceConsumer);
 	m_vecServiceConsumer.erase(itr);
 }
+
+END_APP_NAMESPACE

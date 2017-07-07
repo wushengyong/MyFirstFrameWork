@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AuthServiceProvider.h"
 
+BEGIN_APP_NAMESPACE
 bool AuthProvider::IsConsumerCanUseService(const tstring& strConsumerName, const tstring& strProviderName, const tstring& strServiceName) const
 {
 	return true; // 当前所有的权限均正常使用
@@ -19,3 +20,4 @@ tstring AuthProvider::GetProviderName() const
 {
 	return AUTH_RPOVIDER_NAME;
 }
+END_APP_NAMESPACE

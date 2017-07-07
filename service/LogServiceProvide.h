@@ -3,6 +3,7 @@
 #include "interface/ILogProvider.h"
 #include <vector>
 
+BEGIN_APP_NAMESPACE
 typedef std::vector<ILogger*>   VEC_LOGGER;
 
 class LogProvider : public ILogProvider
@@ -21,3 +22,4 @@ public:
 private:
 	VEC_LOGGER   m_vecLoggers;
 };
+END_APP_NAMESPACE
