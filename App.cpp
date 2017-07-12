@@ -11,7 +11,7 @@
 
 BEGIN_APP_NAMESPACE
 
-#define APP_NAME   _T("EfirmEplateRW")
+#define APP_NAME   _T("APP_NAME")
 
 #define MODULE_NODE    _T("modules")
 #define MODULE_NAME    _T("name")
