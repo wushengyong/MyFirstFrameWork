@@ -6,7 +6,7 @@
 BEGIN_APP_NAMESPACE
 
 
-#define CLSID_NET_CMM "37BB3B2A-63E5-4814-AE59-FDC6627BFE99"
+#define CLSID_NET_CMM ""
 #define SERVER_NODE   _T("server")
 
 NetProvider::NetProvider() : m_pLogSystem(NULL)

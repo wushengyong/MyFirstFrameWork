@@ -5,20 +5,20 @@
 #include "interface/device/ftd2xx.h"
 
 
-#define DEVICE_NODE           _T("device")
-#define USB_NODE              _T("usb")
-#define COM_NODE              _T("com")
-#define DESCRIPTION_NOE       _T("description")
-#define PID_NODE              _T("pid")
-#define VID_NODE              _T("vid")
+#define DEVICE_NODE           _T("")
+#define USB_NODE              _T("")
+#define COM_NODE              _T("")
+#define DESCRIPTION_NOE       _T("")
+#define PID_NODE              _T("")
+#define VID_NODE              _T("")
 
 
-#define EFIRM96_CLSID   "9F73C37B-0DD3-4784-BA67-D32D8A9B5D18"
-#define EFIRM16_CLSID   "70B3A7E9-69CF-4D4A-B6DB-C950F4B583EF"
-#define USBIO_CLSID     "DCAD22BC-082B-44D8-9C1B-3775CA023828"
+#define EFIRM96_CLSID   ""
+#define EFIRM16_CLSID   ""
+#define USBIO_CLSID     ""
 
-#define EFIRM_TYPE_96WELLS       _T("eplate_96_wells")
-#define EFIRM_TYPE_16WELLS       _T("eplate_16_wells")
+#define EFIRM_TYPE_96WELLS       _T("")
+#define EFIRM_TYPE_16WELLS       _T("")
 
 BEGIN_APP_NAMESPACE
 
