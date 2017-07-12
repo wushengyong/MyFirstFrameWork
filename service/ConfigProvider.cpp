@@ -1,40 +1,65 @@
 #include "stdafx.h"
 #include "ConfigProvider.h"
 #include <fstream>
+#include "base/getexedir.h"
+#include <ShlObj.h>
+#include "json/json.h"
+#include <fstream>
 
 BEGIN_APP_NAMESPACE
 
-#define GLOBAL_CONFIG_PATH _T("config.json")
+#define GLOBAL_CONFIG_PATH _T("\\EplateBarcodeRW\\config.json")
 
-ConfigService::ConfigService(const tstring& strFileName)
+ConfigService::ConfigService(const tstring& strFilePath) 
+	: m_strFilePath(strFilePath)
+	, m_bIsOpened(false)
 {
-	std::ifstream ifstream(strFileName);
-	Json::Reader reader;
-	if (!reader.parse(ifstream,configRoot)){
-		m_pLogProvider->Log(DEBUG_LOG, strFileName + _T("Cannot be parsed."));
+
+}
+
+
+Json::Value ConfigService::GetConfigNode(const tstring& strNodeName)
+{
+	if (!m_bIsOpened){
+		Deserialize();
 	}
+	return m_jsonRoot[strNodeName];
 }
 
-Json::Value GetConfigNode(const tstring& strNodeName)
+bool ConfigService::Serialize(const Json::Value& config)
 {
-	return configRoot[strNodeName];
+	std::ofstream ofstream(m_strFilePath);
+	Json::StyledStreamWriter writer;
+	writer.write(ofstream, config);
+	return true;
 }
-
-ConfigProvider::ConfigProvider() : m_globalConfig(GLOBAL_CONFIG_PATH)
+Json::Value ConfigService::Deserialize()
+{
+	std::ifstream ifstream(m_strFilePath);
+	Json::Reader reader;
+	reader.parse(ifstream, m_jsonRoot);
+	return m_jsonRoot;
+}
+ConfigProvider::ConfigProvider() : m_globalConfig(GetExeDir() + GLOBAL_CONFIG_PATH)
 {
 	
 }
 bool ConfigProvider::GetService(const tstring& strConsumer, const tstring& strServiceProvider, const tstring& strServiceName, void** pService)
 {
 	if (CONFIG_RPOVIDER_NAME == strServiceProvider) {
-		if (GLOBAL_CONFIG_SERVICE_NAME == strServiceName){
-			*pService = (void*)&m_globalConfig;
+		if (GLOBAL_CONFIG_SERVICE == strServiceName){
+			*pService = dynamic_cast<IGlobalConfigService*>(&m_globalConfig);
 			return true;
 		}
-		else if (LOCAL_CONFIG_SERVICE_NAME == strServiceName){
-			return false;
+		else if (LOCAL_CONFIG_SERVICE == strServiceName){
+			tstring strPath  = GetApplicationDir() + _T("\\") +strConsumer;
+			if (m_mapLocalConfigs.find(strPath) == m_mapLocalConfigs.end()){
+				m_mapLocalConfigs[strPath] = ConfigService(strPath);
+			}
+			*pService = dynamic_cast<ILocalConfigService*>(&m_mapLocalConfigs[strPath]);
+			return true;
 		}
-
+		
 	}
 	return false;
 }
@@ -45,7 +70,16 @@ tstring ConfigProvider::GetProviderName() const
 }
 void ConfigProvider::ConsumeService(IServiceProvider* pServiceProvider)
 {
-	pServiceProvider->GetService(GetProviderName(),LOG_PROVIDE_NAME, LOG_SERVICE_NAME, (void**)&m_globalConfig.m_pLogProvider);
 }
 
+tstring app::ConfigProvider::GetApplicationDir()
+{
+	TCHAR szPath[MAX_PATH] = { 0 };
+	::SHGetSpecialFolderPath(NULL, szPath, CSIDL_APPDATA, true);
+	return szPath;
+}
+
+
+
 END_APP_NAMESPACE
+

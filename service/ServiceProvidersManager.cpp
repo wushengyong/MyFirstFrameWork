@@ -4,6 +4,8 @@
 #include "LogServiceProvide.h"
 #include "ViewServiceProvider.h"
 #include "ConfigProvider.h"
+#include "NetServiceProvider.h"
+#include "DevServiceProvider.h"
 
 BEGIN_APP_NAMESPACE
 
@@ -19,16 +21,27 @@ ServiceProvidersManager::~ServiceProvidersManager()
 void ServiceProvidersManager::InitServices()
 {
 	// 可以读取DLL中的IServiceProvider跟IServiceConsumer或者自己搞
-	m_auth = std::tr1::shared_ptr<IAuthProvider>(new AuthProvider());
-	m_log  = std::tr1::shared_ptr<ILogProvider>(new LogProvider());
-	m_config = std::tr1::shared_ptr<IConfigProvider>(new ConfigProvider());
+	m_auth       = std::tr1::shared_ptr<AuthProvider>(new AuthProvider());
+	m_log        = std::tr1::shared_ptr<LogProvider>(new LogProvider());
+	m_view       = std::tr1::shared_ptr<ViewProvider>(new ViewProvider());
+	m_config     = std::tr1::shared_ptr<ConfigProvider>(new ConfigProvider());
+	m_netService = std::tr1::shared_ptr<NetProvider>(new NetProvider());
+	m_devService = std::tr1::shared_ptr<DevProvider>(new DevProvider());
+
 
 	AddServiceProvider(m_auth.get());
 	AddServiceProvider(m_log.get());
-	AddServiceProvider(m_view.get());
 	AddServiceProvider(m_config.get());
-	
+	AddServiceProvider(m_view.get());
+	AddServiceProvider(m_netService.get());
+	AddServiceProvider(m_devService.get());
+
+	AddServiceConsumer(m_auth.get());
+	AddServiceConsumer(m_log.get());
 	AddServiceConsumer(m_config.get());
+	AddServiceConsumer(m_view.get());
+	AddServiceConsumer(m_netService.get());
+	AddServiceConsumer(m_devService.get());
 
 }
 
@@ -44,6 +57,7 @@ bool ServiceProvidersManager::GetService(const tstring& strConsumer, const tstri
 		auto itr = m_mapServiceProviders.find(strServiceProvider);
 		if (itr != m_mapServiceProviders.end()) {
 			itr->second->GetService(strConsumer, strServiceProvider, strServiceName, pService);
+			return true;
 		}
 	}
 	return false;
@@ -63,7 +77,7 @@ void ServiceProvidersManager::ConsumeService(IServiceProvider* pServiceProvider)
 
 bool ServiceProvidersManager::AddServiceProvider(IServiceProvider* pServiceProvider)
 {
-	if (m_mapServiceProviders.find(pServiceProvider->GetProviderName()) == m_mapServiceProviders.end()) {
+	if (m_mapServiceProviders.find(pServiceProvider->GetProviderName()) != m_mapServiceProviders.end()) {
 		return false;
 	}
 	m_mapServiceProviders[pServiceProvider->GetProviderName()] = pServiceProvider;
@@ -81,12 +95,15 @@ void ServiceProvidersManager::RemovServiceProvider(IServiceProvider* pServicePro
 bool ServiceProvidersManager::AddServiceConsumer(IServiceConsumer* pServiceConsumer)
 {
 	m_vecServiceConsumer.push_back(pServiceConsumer);
+	return true;
 }
 
 void ServiceProvidersManager::RemovServiceConsumer(IServiceConsumer* pServiceConsumer)
 {
 	auto itr = std::find(m_vecServiceConsumer.begin(), m_vecServiceConsumer.end(), pServiceConsumer);
-	m_vecServiceConsumer.erase(itr);
+	if (itr != m_vecServiceConsumer.end()){
+		m_vecServiceConsumer.erase(itr);
+	}
 }
 
 END_APP_NAMESPACE

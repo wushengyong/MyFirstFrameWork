@@ -20,4 +20,11 @@ tstring AuthProvider::GetProviderName() const
 {
 	return AUTH_RPOVIDER_NAME;
 }
+
+
+void AuthProvider::ConsumeService(IServiceProvider* pServiceProvider)
+{
+
+}
+
 END_APP_NAMESPACE

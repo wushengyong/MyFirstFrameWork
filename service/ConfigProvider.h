@@ -1,27 +1,34 @@
 #pragma once
 
-#include "interface/IConfigProvider.h"
+#include "interface/IServiceProvider.h"
+#include "interface/IServiceConsumer.h"
 #include "interface/IConfigService.h"
-#include "interface/ILogProvider.h"
+#include "interface/ILogSystem.h"
+#include "Json/json.h"
+
 
 BEGIN_APP_NAMESPACE
 
-class ConfigService : public IConfigService
+class ConfigService
+	: public IGlobalConfigService
+	, public ILocalConfigService
 {
 public:
-	ConfigService(const tstring& strFileName);
+	ConfigService(const tstring& strFilePath = _T(""));
 	
-	virtual Json::Value GetConfigNode(const tstring& strNodeName) override;
+	virtual Json::Value      GetConfigNode(const tstring& strNodeName) override;
+	virtual bool             Serialize(const Json::Value& config) override;
+	virtual Json::Value      Deserialize() override;
 	
 private:
-	Json::Value configRoot;
-	
-public:
-	ILogProvider* m_pLogProvider;
+	Json::Value m_jsonRoot;
+	bool        m_bIsOpened;
+	tstring     m_strFilePath;
 };
 
-class ConfigProvider 
-	: public IConfigProvider
+
+class ConfigProvider
+	: public IServiceProvider
 	, public IServiceConsumer
 {
 public:
@@ -32,8 +39,10 @@ public:
 	
 	virtual void         ConsumeService(IServiceProvider* pServiceProvider) override;
 
+	tstring              GetApplicationDir();
 private:
 	ConfigService        m_globalConfig;
+	std::map<tstring, ConfigService> m_mapLocalConfigs;
 };
 
 END_APP_NAMESPACE

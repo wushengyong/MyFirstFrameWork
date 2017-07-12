@@ -8,10 +8,13 @@
 
 BEGIN_APP_NAMESPACE
 
-class IAuthProvider;
-class ILogProvider;
-class IViewProvider;
-class IConfigProvider;
+class AuthProvider;
+class LogProvider;
+class ViewProvider;
+class ConfigProvider;
+class NetProvider;
+class DevProvider;
+
 
 #define PROVIDER_NAME  _T("ServiceProvidersManager")
 #define SERVICE_NAME   _T("ServiceProvider")
@@ -43,10 +46,12 @@ private:
 	MAP_SERVICE_PROVIDER                  m_mapServiceProviders;
 	VEC_SERVICE_CONSUMER                  m_vecServiceConsumer;
 
-	std::tr1::shared_ptr<IAuthProvider>   m_auth;
-	std::tr1::shared_ptr<ILogProvider>    m_log;
-	std::tr1::shared_ptr<IViewProvider>   m_view;
-	std::tr1::shared_ptr<IConfigProvider> m_config;
+	std::tr1::shared_ptr<AuthProvider>           m_auth;
+	std::tr1::shared_ptr<LogProvider>            m_log;
+	std::tr1::shared_ptr<ViewProvider>           m_view;
+	std::tr1::shared_ptr<ConfigProvider>         m_config;
+	std::tr1::shared_ptr<NetProvider>            m_netService;
+	std::tr1::shared_ptr<DevProvider>            m_devService;
 };
 
 END_APP_NAMESPACE

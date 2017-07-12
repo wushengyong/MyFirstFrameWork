@@ -1,7 +1,21 @@
 #include "stdafx.h"
 #include "LogServiceProvide.h"
+#include "Base/getexedir.h"
+#include <ShlObj.h>
 
 BEGIN_APP_NAMESPACE
+
+
+LogProvider::LogProvider() : m_FileLogger(GetApplicationDir() + _T("\\Log.txt"))
+{
+	AddLogger(&m_FileLogger);
+}
+
+LogProvider::~LogProvider()
+{
+	m_vecLoggers.clear();
+}
+
 void LogProvider::AddLogger(ILogger* pLogger)
 {
 	if (std::find(m_vecLoggers.begin(), m_vecLoggers.end(), pLogger) == m_vecLoggers.end()) {
@@ -29,6 +43,20 @@ bool LogProvider::GetService(const tstring& strConsumer, const tstring& strServi
 tstring LogProvider::GetProviderName() const
 {
 	return LOG_PROVIDE_NAME;
+}
+
+
+void LogProvider::ConsumeService(IServiceProvider* pServiceProvider)
+{
+
+}
+
+
+tstring app::LogProvider::GetApplicationDir()
+{
+	TCHAR szPath[MAX_PATH] = { 0 };
+	::SHGetSpecialFolderPath(NULL, szPath, CSIDL_APPDATA, true);
+	return szPath;
 }
 
 void LogProvider::Log(LOG_TYPE logType, const tstring& strLog)
