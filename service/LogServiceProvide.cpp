@@ -35,9 +35,9 @@ bool LogProvider::GetService(const tstring& strConsumer, const tstring& strServi
 {
 	if (strServiceProvider == LOG_PROVIDE_NAME && strServiceName == LOG_SERVICE_NAME) {
 		*pService = (void*)this;
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 tstring LogProvider::GetProviderName() const
